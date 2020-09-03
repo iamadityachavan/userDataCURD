@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>User Data</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="styles/libraries/jquery-ui.css">
+    <link rel="stylesheet" href="styles/libraries/bootstrap.min.css">
+    <link rel="stylesheet" href="styles/style.css">
+    <script src="scripts/libraries/jquery-3.5.1.min.js"></script>
+    <script src="scripts/libraries/jquery-ui.js"></script>
+    <script src="scripts/libraries/popper.min.js"></script>
+    <script src="scripts/libraries/bootstrap.min.js"></script>
+    <script src="scripts/libraries/angular.min.js"></script>
+    <script src="scripts/script.js"></script>
+</head>
+
+<body>
+    <div class="container-fluid" id="myController" ng-app="myApp" ng-controller="myCtrl">
+        <div class="row">
+            <div class="col-md-6 mt-3">
+                <form id="myform" ng-submit="saveDataToJson()">
+                    <div class="form-group">
+                        <label for="inputFirstName">First Name:</label>
+                        <input type="text" class="form-control inputTextField" id="inputFirstName" required maxlength="25" placeholder="Enter First Name">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputLastName">Last Name:</label>
+                        <input type="text" class="form-control inputTextField" id="inputLastName" required maxlength="25" placeholder="Enter Last Name">
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address:</label>
+                        <div class="email-list">
+                            <div class="input-group email-input mb-2" email-index='0'>
+                                <div class="input-group-prepend email-list-label">
+                                    <span class="input-group-text">Email 1</span>
+                                </div>
+                                <input type="email" class="form-control inputTextField" id="inputEmailData" required aria-describedby="emailHelp" maxlength="30" placeholder="Enter Email Address">
+                                <div class="input-group-append btn-remove-email">
+                                    <button class="btn btn-danger" type="button">&times;</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group"> <button type="button" class="btn btn-success btn-sm btn-add-email">Add Email Address</button>
+                    </div>
+                    <div class="form-group">
+                        <label class="contact-label">Mobile Number:</label>
+                        <div class="phone-list">
+                            <div class="phone-input" mobile-number-index='0'>
+                                <label class="contact-list-label">Number 1:</label>
+                                <div class="form-row">
+                                    <div class="col-md-3">
+                                        <label for="contactType">Type:</label>
+                                        <span class="input-group-btn">
+                                            <div class="dropdown">
+                                                <button class="btn btn-info dropdown-toggle type-text contactTypeDivData" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Personal</button>
+                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                    <a class="dropdown-item changeType active">Personal</a>
+                                                    <a class="dropdown-item changeType">Home</a>
+                                                    <a class="dropdown-item changeType">Office</a>
+                                                </div>
+                                            </div>
+                                        </span>
+                                        <input id="contactType" type="hidden" class="type-input" value="" />
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="countryCode">Code:</label>
+                                        <input type="text" required class="form-control inputTextField" maxlength="3" id="countryCode" placeholder="+91">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="mobileNumber">Number:</label>
+                                        <div class="input-group">
+                                            <input type="number" required maxlength="10" class="form-control inputTextField" id="mobileNumber" placeholder="Enter Mobile Number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
+                                            <div class="input-group-append btn-remove-phone">
+                                                <button class="btn btn-danger" type="button">&times;</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group"> <button type="button" class="btn btn-success btn-sm btn-add-phone">Add Mobile Number</button>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputDate">Date Of Birth:</label>
+                        <input type="text" class="form-control inputTextField inputBirthDate" id="inputDate" required placeholder="dd/mm/yyyy">
+                    </div>
+                    <button type="submit" id="submitMyForm" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+            <div class="col-md-6 mt-3">
+                <div class="jumbotron jumbotron-fluid bg-light d-flex h-100" ng-if="userData.length == 0">
+                    <div class="container d-flex align-items-center">
+                        <h1 class="display-4 text-center w-100 text-secondary">No Data To Display</h1>
+                    </div>
+                </div>
+                <div class="row" ng-if="userData.length > 0">
+                    <div class="form-group col-sm-12">
+                        <input class="form-control mb-9" type="text" placeholder="Search User By Name" ng-model="userSearch" aria-label="Search">
+                    </div>
+                    <div class="col-sm-6 p-7">
+                        <div class="form-group row pl-4">
+                            <label for="checkbox3" class="form-control-label">List View&emsp;</label>
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" ng-model='isTileView' class="custom-control-input" id="customSwitch1">
+                                <label class="custom-control-label" for="customSwitch1">Tile View</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 mb-4">
+                        <select class="custom-select" ng-model="sortBy">
+                            <option value="" selected>Sort By</option>
+                            <option value="firstName">By First Name</option>
+                            <option value="lastName">By Last Name</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-10 userDataContainer m-auto" user-data-index=$index ng-if='!isTileView' ng-repeat="userData in userData | orderBy: sortBy | filter : userSearch">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">{{userData.fullName}}</h5>
+                                <div ng-repeat="mobileNumberList in userData.mobileNumberList">
+                                    <div><span class="contactTypeData">{{mobileNumberList.contactType}} :</span><span class="mobileNumberData">{{mobileNumberList.countryCode}}{{mobileNumberList.mobileNumber}}</span></div>
+                                </div>
+                                <div ng-repeat="emailIdList in userData.emailIdList">
+                                    <div class="card-text"><span class="emailIdNo">Email {{($index + 1)}}: </span><span class="emailIdData">{{emailIdList}}</span></div>
+                                </div>
+                                <div class="d-flex justify-content-end">
+                                    <a href="#" class="btn btn-secondary fa fa-eye ml-2"></a>
+                                    <a href="#" class="btn btn-secondary fa fa-envelope ml-2"></a>
+                                    <a href="#" class="btn btn-secondary fa fa-phone ml-2"></a>
+                                </div>
+                                <a href="#" class="btn btn-danger fa fa-close deleteData" ng-click='deleteUserData(userData.id)'></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 userDataContainer" user-data-index=$index ng-if='isTileView' ng-repeat="userData in userData | orderBy: sortBy | filter : userSearch">
+                        <div class="card">
+                            <div class="card-body row">
+                                <div class="col-sm-7">
+                                    <h5 class="card-title">{{userData.fullName}}</h5>
+                                    <div ng-repeat="mobileNumberList in userData.mobileNumberList">
+                                        <div><span class="contactTypeData">{{mobileNumberList.contactType}} :</span><span class="mobileNumberData">{{mobileNumberList.countryCode}}{{mobileNumberList.mobileNumber}}</span></div>
+                                    </div>
+                                    <div ng-repeat="emailIdList in userData.emailIdList">
+                                        <div class="card-text"><span class="emailIdNo">Email {{($index + 1)}}: </span><span class="emailIdData">{{emailIdList}}</span></div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-5 d-flex flex-column">
+                                    <div class="mb-auto d-flex justify-content-end">
+                                        <a href="#" class="btn btn-light fa fa-eye ml-1"></a>
+                                        <a href="#" class="btn btn-light fa fa-envelope ml-1"></a>
+                                        <a href="#" class="btn btn-light fa fa-phone ml-1"></a>
+                                    </div>
+                                    <div class="d-flex justify-content-end">
+                                        <a href="#" class="ml-2" ng-click='editUserData(userData.id , $event)'>Edit</a>
+                                        <a href="#" class="ml-2" ng-click='deleteUserData(userData.id)'>Delete</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

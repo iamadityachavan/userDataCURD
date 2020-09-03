@@ -1,0 +1,33 @@
+.contact-list-label,
+.btn-remove-phone,
+.email-list-label,
+.btn-remove-email {
+    display: none;
+}
+
+.multipleContactAdded .contact-list-label {
+    display: inline-block;
+}
+
+.multipleContactAdded .btn-remove-phone {
+    display: flex;
+}
+
+.multipleEmailAdded .email-list-label,
+.multipleEmailAdded .btn-remove-email {
+    display: flex;
+}
+
+.deleteData {
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    border-radius: 50%;
+    font-size: 0.7rem;
+}
+.mobileNumberList{
+	display: none;
+}
+.mobileNumberList:first-of-type {
+  display: block;
+}
